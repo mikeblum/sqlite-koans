@@ -5,14 +5,18 @@ import (
 	"log"
 	"net/url"
 	"os"
+	"strconv"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 const (
-	PragmaTimeout = 5000
-	SqliteCmd     = "sqlite3"
-	DbFile        = "file:koans.db"
+	PragmaForeignKeys = true
+	PragmaJournalMode = "WAL"
+	PragmaSynchronous = "NORMAL"
+	PragmaTimeout     = 5000
+	SqliteCmd         = "sqlite3"
+	DbFile            = "file:koans.db"
 )
 
 func main() {
@@ -46,8 +50,11 @@ func dbUrl() (string, error) {
 		return "", err
 	}
 	pragmas := url.Values{}
-	pragmas.Set("_journal_mode", "WAL")
-	pragmas.Set("_synchronous", "NORMAL")
+	// mattn/go-sqlite3 DSN keys
+	pragmas.Set("_busy_timeout", strconv.Itoa(PragmaTimeout))
+	pragmas.Set("_foreign_keys", strconv.FormatBool(PragmaForeignKeys))
+	pragmas.Set("_journal_mode", PragmaJournalMode)
+	pragmas.Set("_synchronous", PragmaSynchronous)
 	dataSourceName.RawQuery = pragmas.Encode()
 	log.Println(dataSourceName.String())
 	return dataSourceName.String(), err
