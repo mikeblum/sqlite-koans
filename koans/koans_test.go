@@ -9,4 +9,5 @@ func TestKoans(t *testing.T) {
 	koans, teardown := SetupSuite(t)
 	defer teardown(t)
 	t.Run("koan=strict", koans.StrictTablesTest)
+	t.Run("koan=timeout", koans.BusyTimeoutTest)
 }

@@ -15,7 +15,6 @@ const (
 	PragmaForeignKeys = true
 	PragmaJournalMode = "WAL"
 	PragmaSynchronous = "NORMAL"
-	PragmaTimeout     = 5000
 	SqliteCmd         = "sqlite3"
 	DbFile            = "file:koans.db"
 )
@@ -52,7 +51,7 @@ func DbUrl() (string, error) {
 	pragmas := url.Values{}
 	// mattn/go-sqlite3 DSN keys
 	// not every PRAGMA has a DSN equivalent
-	pragmas.Set("_busy_timeout", strconv.Itoa(PragmaTimeout))
+	pragmas.Set("_busy_timeout", strconv.Itoa(PragmaTimeoutMs))
 	pragmas.Set("_foreign_keys", strconv.FormatBool(PragmaForeignKeys))
 	pragmas.Set("_journal_mode", PragmaJournalMode)
 	pragmas.Set("_synchronous", PragmaSynchronous)
