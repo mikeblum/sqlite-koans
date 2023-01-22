@@ -34,10 +34,8 @@ func (t *TableListRaw) TableName() string {
 	}, "."))
 }
 
-func TestStrictTables(t *testing.T) {
-	koans, teardown := SetupSuite(t)
-	defer teardown(t)
-	rows, err := koans.db.Query(PragmaTableList)
+func (k *KoansTest) StrictTablesTest(t *testing.T) {
+	rows, err := k.db.Query(PragmaTableList)
 	assert.Nil(t, err)
 	defer rows.Close()
 	n := 0
