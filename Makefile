@@ -37,7 +37,7 @@ run:
 
 ## test: Test with go test
 test:
-	go test -race -covermode=atomic -coverprofile=coverage.out ./... && go tool cover -html=coverage.out && rm coverage.out
+	go test -test.v -race -covermode=atomic -coverprofile=coverage.out ./... && go tool cover -html=coverage.out && rm coverage.out
 
 ## test-perf: Benchmark tests with go test -bench
 test-perf:

@@ -14,7 +14,6 @@ import (
 )
 
 const (
-	PragmaForeignKeys = true
 	PragmaJournalMode = "WAL"
 	PragmaSynchronous = "NORMAL"
 	SqliteCmd         = "sqlite3"
@@ -62,7 +61,7 @@ func DbUrl() (string, error) {
 	// mattn/go-sqlite3 DSN keys
 	// not every PRAGMA has a DSN equivalent
 	pragmas.Set("_busy_timeout", strconv.Itoa(PragmaTimeoutMs))
-	pragmas.Set("_foreign_keys", strconv.FormatBool(PragmaForeignKeys))
+	pragmas.Set("_foreign_keys", strconv.FormatBool(true))
 	pragmas.Set("_journal_mode", PragmaJournalMode)
 	pragmas.Set("_synchronous", PragmaSynchronous)
 	dataSourceName.RawQuery = pragmas.Encode()
