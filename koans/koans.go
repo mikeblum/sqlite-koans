@@ -15,7 +15,6 @@ import (
 
 const (
 	PragmaJournalMode = "WAL"
-	PragmaSynchronous = "NORMAL"
 	SqliteCmd         = "sqlite3"
 	DbPrefix          = "file:"
 	DbName            = "koans.db"
@@ -63,7 +62,7 @@ func DbUrl() (string, error) {
 	pragmas.Set("_busy_timeout", strconv.Itoa(PragmaTimeoutMs))
 	pragmas.Set("_foreign_keys", strconv.FormatBool(true))
 	pragmas.Set("_journal_mode", PragmaJournalMode)
-	pragmas.Set("_synchronous", PragmaSynchronous)
+	pragmas.Set("_synchronous", PragmaSynchronousNormal)
 	dataSourceName.RawQuery = pragmas.Encode()
 	log.Println(dataSourceName.String())
 	return dataSourceName.String(), err

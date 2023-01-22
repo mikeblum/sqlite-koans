@@ -12,4 +12,5 @@ func TestKoans(t *testing.T) {
 	t.Run("koan=timeout", koans.BusyTimeoutTest)
 	t.Run("koan=encoding", koans.EncodingTest)
 	t.Run("koan=foreign_keys", koans.ForeignKeysTest)
+	t.Run("koan=synchronous", koans.SynchronousTest)
 }
