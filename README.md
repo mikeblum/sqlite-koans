@@ -5,9 +5,13 @@ Companion code for [SQLite Koans](https://mblum.me/2023/01/sqlite-koans/)
 This project configures `sqlite3` for real world apps:
 
 ✅ Foreign Keys
+
 ✅ Read as you Write
+
 ✅ Write-Ahead Logging
+
 ✅ `UTF-8` encoding
+
 ✅ graceful table lock error handling via `PRAGMA busy_timeout;`
 
 The repo has a commit covering each koan that we tie to a particular `PRAGMA` config flag:
