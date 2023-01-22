@@ -22,7 +22,7 @@ The repo has a commit covering each koan that we tie to a particular `PRAGMA` co
 
 [SQLite Version 3.40.1](https://www.sqlite.org/releaselog/3_40_1.html)
 
-> Ubuntu apt version is outdated
+> Ubuntu apt version is outdated on both Ubuntu 20 and 22
 
 ## Build SQLite from source
 

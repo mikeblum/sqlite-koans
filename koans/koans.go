@@ -6,9 +6,11 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"strings"
 	"testing"
 
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -16,8 +18,16 @@ const (
 	PragmaJournalMode = "WAL"
 	PragmaSynchronous = "NORMAL"
 	SqliteCmd         = "sqlite3"
-	DbFile            = "file:koans.db"
+	DbPrefix          = "file:"
+	DbName            = "koans.db"
+	DbFile            = DbPrefix + DbName
+	DbFileShm         = DbFile + "-shm"
+	DbFileWal         = DbFile + "-wal"
 )
+
+var DbFiles []string = []string{
+	DbFile, DbFileShm, DbFileWal,
+}
 
 type Koans struct {
 	db *sql.DB
@@ -74,9 +84,13 @@ func Setup(dbUrl string) (*sql.DB, error) {
 }
 
 func Teardown(t *testing.T) error {
-	err := os.Remove(DbFile)
-	// if t != nil {
-	// 	assert.Nil(t, err)
-	// }
+	var err error
+	for i := range DbFiles {
+		file := DbFiles[i]
+		err = os.Remove(strings.Replace(file, DbPrefix, "", 1))
+		if t != nil {
+			assert.Nil(t, err)
+		}
+	}
 	return err
 }
