@@ -14,13 +14,12 @@ import (
 )
 
 const (
-	PragmaJournalMode = "WAL"
-	SqliteCmd         = "sqlite3"
-	DbPrefix          = "file:"
-	DbName            = "koans.db"
-	DbFile            = DbPrefix + DbName
-	DbFileShm         = DbFile + "-shm"
-	DbFileWal         = DbFile + "-wal"
+	SqliteCmd = "sqlite3"
+	DbPrefix  = "file:"
+	DbName    = "koans.db"
+	DbFile    = DbPrefix + DbName
+	DbFileShm = DbFile + "-shm"
+	DbFileWal = DbFile + "-wal"
 )
 
 var DbFiles []string = []string{
@@ -61,7 +60,7 @@ func DbUrl() (string, error) {
 	// not every PRAGMA has a DSN equivalent
 	pragmas.Set("_busy_timeout", strconv.Itoa(PragmaTimeoutMs))
 	pragmas.Set("_foreign_keys", strconv.FormatBool(true))
-	pragmas.Set("_journal_mode", PragmaJournalMode)
+	pragmas.Set("_journal_mode", JournalModeWAL)
 	pragmas.Set("_synchronous", PragmaSynchronousNormal)
 	dataSourceName.RawQuery = pragmas.Encode()
 	log.Println(dataSourceName.String())
