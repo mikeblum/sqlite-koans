@@ -7,7 +7,7 @@ import (
 )
 
 type BusyTimeout struct {
-	milliseconds int
+	Milliseconds int
 }
 
 func (k *KoansTest) BusyTimeoutTest(t *testing.T) {
@@ -17,10 +17,10 @@ func (k *KoansTest) BusyTimeoutTest(t *testing.T) {
 	n := 0
 	for rows.Next() {
 		timeout := BusyTimeout{}
-		err := rows.Scan(&timeout.milliseconds)
+		err := rows.Scan(&timeout.Milliseconds)
 		assert.Nil(t, err)
 		defer rows.Close()
-		assert.Equal(t, PragmaTimeoutMs, timeout.milliseconds)
+		assert.Equal(t, PragmaTimeoutMs, timeout.Milliseconds)
 		n = n + 1
 	}
 	assert.True(t, n > 0)

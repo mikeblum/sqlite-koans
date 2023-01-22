@@ -10,4 +10,5 @@ func TestKoans(t *testing.T) {
 	defer teardown(t)
 	t.Run("koan=strict", koans.StrictTablesTest)
 	t.Run("koan=timeout", koans.BusyTimeoutTest)
+	t.Run("koan=encoding", koans.EncodingTest)
 }
