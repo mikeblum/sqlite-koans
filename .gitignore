@@ -22,3 +22,6 @@ go.work
 
 # Sqlite DB
 *.db
+
+# vscode settings
+.vscode
