@@ -77,6 +77,10 @@ func Setup(dbUrl string) (*sql.DB, error) {
 		log.Printf("%q: %s\n", err, CreateStrictTableStmt)
 		return db, err
 	}
+	if _, err = db.Exec(CreateStrictWithoutRowIdTableStmt); err != nil {
+		log.Printf("%q: %s\n", err, CreateStrictWithoutRowIdTableStmt)
+		return db, err
+	}
 	return db, err
 }
 
