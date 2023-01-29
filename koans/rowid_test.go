@@ -35,3 +35,10 @@ func (k *KoansTest) WithoutRowIdStrictTablesTest(t *testing.T) {
 	}
 	assert.True(t, n > 0)
 }
+
+func (k *KoansTest) EmptyPrimaryKeyTest(t *testing.T) {
+	_, err := k.db.Exec(fmt.Sprintf(`INSERT INTO %s(id) VALUES(?);`, TableTestWithoutRowIdStrict), "")
+	assert.NotNil(t, err)
+	expected := "CHECK constraint failed: length(trim(id)) > 0"
+	assert.EqualError(t, err, expected)
+}
