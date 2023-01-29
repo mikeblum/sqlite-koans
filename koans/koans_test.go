@@ -1,13 +1,18 @@
 package koans
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 // koans_test executes all koan tests
 
 // TestKoans: test suite runner
 func TestKoans(t *testing.T) {
-	koans, teardown := SetupSuite(t)
+	koans, teardown, err := SetupSuite()
 	defer teardown(t)
+	assert.Nil(t, err)
 	t.Run("koan=strict", koans.StrictTablesTest)
 	t.Run("koan=rowid", koans.WithoutRowIdStrictTablesTest)
 	t.Run("koan=primary_keys", func(t *testing.T) {
@@ -18,4 +23,11 @@ func TestKoans(t *testing.T) {
 	t.Run("koan=foreign_keys", koans.ForeignKeysTest)
 	t.Run("koan=synchronous", koans.SynchronousTest)
 	t.Run("koan=journal_mode", koans.JournalModeTest)
+}
+
+func BenchmarkKoans(b *testing.B) {
+	koans, teardown, err := SetupSuite()
+	defer teardown(nil)
+	assert.Nil(b, err)
+	b.Run("koan=upsert", koans.UpsertRecordsBench)
 }

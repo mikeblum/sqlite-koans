@@ -37,8 +37,24 @@ func (k *KoansTest) WithoutRowIdStrictTablesTest(t *testing.T) {
 }
 
 func (k *KoansTest) EmptyPrimaryKeyTest(t *testing.T) {
-	_, err := k.db.Exec(fmt.Sprintf(`INSERT INTO %s(id) VALUES(?);`, TableTestWithoutRowIdStrict), "")
+	_, err := k.db.Exec(fmt.Sprintf(`INSERT INTO %s(id, name) VALUES(?, ?);`, TableTestWithoutRowIdStrict), "", "test")
 	assert.NotNil(t, err)
 	expected := "CHECK constraint failed: length(trim(id)) > 0"
 	assert.EqualError(t, err, expected)
+}
+
+func (k *KoansTest) UpsertRecordsBench(b *testing.B) {
+	// cleanup TableTestWithoutRowIdStrict
+	_, err := k.db.Exec(fmt.Sprintf("DELETE FROM %s", TableTestWithoutRowIdStrict))
+	assert.Nil(b, err)
+	err = k.UpsertRecord(b)
+	assert.Nil(b, err)
+	result, err := k.db.Query(fmt.Sprintf(`SELECT COUNT(1) FROM %s;`, TableTestWithoutRowIdStrict))
+	assert.Nil(b, err)
+	count := 0
+	for result.Next() {
+		err := result.Scan(&count)
+		assert.Nil(b, err)
+	}
+	assert.Equal(b, 1, count)
 }

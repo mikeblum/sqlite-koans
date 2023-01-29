@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/google/uuid"
 )
 
 // koanstest
@@ -16,10 +16,10 @@ import (
 var koanstest *KoansTest
 
 const (
-	PragmaTableList        = "PRAGMA main.table_list;"
-	UpsertStrictRecordStmt = `
-	INSERT INTO test_strict(name) VALUES(?)
-	ON CONFLICT(name) DO
+	PragmaTableList  = "PRAGMA main.table_list;"
+	UpsertRecordStmt = `
+	INSERT INTO %s(id, name) VALUES(?, ?)
+	ON CONFLICT DO
 		UPDATE SET updated=datetime('unixepoch');`
 )
 
@@ -60,36 +60,36 @@ type KoansTest struct {
 	Koans
 }
 
-func SetupSuite(t *testing.T) (*KoansTest, func(t *testing.T) error) {
+func SetupSuite() (*KoansTest, func(t *testing.T) error, error) {
 	if koanstest != nil {
-		return koanstest, Teardown
+		return koanstest, Teardown, nil
 	}
 	koans, err := New()
-	assert.Nil(t, err)
 	koanstest = &KoansTest{
 		*koans,
 	}
-	return koanstest, Teardown
+	return koanstest, Teardown, err
 }
 
-func (k *KoansTest) UpsertRecord() error {
+func (k *KoansTest) UpsertRecord(b *testing.B) error {
 	var stmt *sql.Stmt
 	var tx *sql.Tx
 	var err error
 	if tx, err = k.db.Begin(); err != nil {
 		return err
 	}
-	if stmt, err = tx.Prepare(UpsertStrictRecordStmt); err != nil {
-		log.Printf("failed to prepare stmt: %q: %s\n", err, UpsertStrictRecordStmt)
+	upsertStmt := fmt.Sprintf(UpsertRecordStmt, TableTestWithoutRowIdStrict)
+	if stmt, err = tx.Prepare(upsertStmt); err != nil {
+		log.Printf("failed to prepare stmt: %q: %s\n", err, upsertStmt)
 		return err
 	}
 	defer stmt.Close()
-	for i := 0; i < 100; i++ {
-		if _, err = stmt.Exec(i, fmt.Sprintf("こんにちは世界%03d", i)); err != nil {
+	id := uuid.Must(uuid.NewRandom()).String()
+	for i := 0; i < b.N; i++ {
+		if _, err = stmt.Exec(id, i); err != nil {
 			log.Printf("failed to insert record: %v", err)
 			return err
 		}
-
 	}
 	return tx.Commit()
 }

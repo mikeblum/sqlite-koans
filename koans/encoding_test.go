@@ -19,7 +19,6 @@ func (k *KoansTest) EncodingTest(t *testing.T) {
 		encoding := Encoding{}
 		err := rows.Scan(&encoding.Type)
 		assert.Nil(t, err)
-		defer rows.Close()
 		assert.Equal(t, UTF8, encoding.Type)
 		n = n + 1
 	}
