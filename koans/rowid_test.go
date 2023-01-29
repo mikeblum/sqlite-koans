@@ -44,8 +44,7 @@ func (k *KoansTest) EmptyPrimaryKeyTest(t *testing.T) {
 }
 
 func (k *KoansTest) UpsertRecordsBench(b *testing.B) {
-	// cleanup TableTestWithoutRowIdStrict
-	_, err := k.db.Exec(fmt.Sprintf("DELETE FROM %s", TableTestWithoutRowIdStrict))
+	err := k.Truncate()
 	assert.Nil(b, err)
 	err = k.UpsertRecord(b)
 	assert.Nil(b, err)

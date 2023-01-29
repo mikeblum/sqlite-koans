@@ -93,3 +93,38 @@ func (k *KoansTest) UpsertRecord(b *testing.B) error {
 	}
 	return tx.Commit()
 }
+
+func (k *KoansTest) InsertRecords(b *testing.B) error {
+	var stmt *sql.Stmt
+	var tx *sql.Tx
+	var err error
+	if tx, err = k.db.Begin(); err != nil {
+		return err
+	}
+	upsertStmt := fmt.Sprintf(UpsertRecordStmt, TableTestWithoutRowIdStrict)
+	if stmt, err = tx.Prepare(upsertStmt); err != nil {
+		log.Printf("failed to prepare stmt: %q: %s\n", err, upsertStmt)
+		return err
+	}
+	defer stmt.Close()
+	for i := 0; i < b.N; i++ {
+		if _, err = stmt.Exec(uuid.Must(uuid.NewRandom()).String(), i); err != nil {
+			log.Printf("failed to insert record: %v", err)
+			return err
+		}
+	}
+	return tx.Commit()
+}
+
+func (k *KoansTest) Truncate() error {
+	// cleanup test tables
+	for _, table := range []string{
+		TableTestStrict,
+		TableTestWithoutRowIdStrict,
+	} {
+		if _, err := k.db.Exec(fmt.Sprintf("DELETE FROM %s", table)); err != nil {
+			return err
+		}
+	}
+	return nil
+}

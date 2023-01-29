@@ -27,3 +27,6 @@ go.work
 
 # vscode settings
 .vscode
+
+# macOS
+.DS_Store

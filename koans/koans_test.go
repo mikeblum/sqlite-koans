@@ -23,6 +23,7 @@ func TestKoans(t *testing.T) {
 	t.Run("koan=foreign_keys", koans.ForeignKeysTest)
 	t.Run("koan=synchronous", koans.SynchronousTest)
 	t.Run("koan=journal_mode", koans.JournalModeTest)
+	t.Run("koan=backup", koans.BackupWALTest)
 }
 
 func BenchmarkKoans(b *testing.B) {

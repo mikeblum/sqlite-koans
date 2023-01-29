@@ -16,15 +16,11 @@ This project configures `sqlite3` for real world apps:
 
 ✅ No empty or `null` primary keys
 
+✅ WAL backup via checkpointing
+
 The repo has a commit covering each koan that we tie to a particular `PRAGMA` config flag:
 
 [SQLite PRAGMA](https://www.sqlite.org/pragma.html)
-
-## TODO
-
-- Backup a SQLite `WAL` mode database
-
-Normally backing up a DQLite db is as simple as `tar`ing the `data.db` file. `WAL` mode has some other concerns with checkpointing.
 
 ## Depends On
 
