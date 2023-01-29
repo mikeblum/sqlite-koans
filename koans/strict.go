@@ -7,7 +7,7 @@ const (
 	CREATE TABLE IF NOT EXISTS test_strict (
 		id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
 		name TEXT,
-		created INTEGER,
+		created INTEGER DEFAULT (datetime('unixepoch')),
 		updated INTEGER
 	) STRICT;
 	`

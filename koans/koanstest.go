@@ -18,9 +18,9 @@ var koanstest *KoansTest
 const (
 	PragmaTableList        = "PRAGMA main.table_list;"
 	UpsertStrictRecordStmt = `
-	INSERT INTO test_strict(name, created) VALUES(?, ?)
+	INSERT INTO test_strict(name) VALUES(?)
 	ON CONFLICT(name) DO
-		UPDATE SET updated=now();`
+		UPDATE SET updated=datetime('unixepoch');`
 )
 
 type TableListRaw struct {

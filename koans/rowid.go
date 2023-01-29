@@ -10,7 +10,7 @@ const (
 	CREATE TABLE IF NOT EXISTS test_without_rowid_strict (
 		id text NOT NULL PRIMARY KEY CHECK (length(trim(id)) > 0), 
 		name TEXT,
-		created INTEGER,
+		created INTEGER DEFAULT (datetime('unixepoch')),
 		updated INTEGER
 	) WITHOUT ROWID, STRICT;
 	`
